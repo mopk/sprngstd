@@ -2,10 +2,11 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns="http://www.springframework.org/schema/beans"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                             http://www.springframework.org/schema/beans/spring-beans.xsd
                             http://www.springframework.org/schema/context
-                            http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+                            http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
        <!--default-lazy-init="true">-->
 
     <context:annotation-config/>
@@ -13,5 +14,19 @@
     <bean id="MySuperClassService"
           class="org.mopk.SuperClassService">
     </bean>
+
+    <bean id="BeanWithPropertyOfCollectionTypeInjectedByList"
+          class="org.mopk.BeanClassWithPropertyOfCollectionTypeInjectedByList"
+    >
+        <property
+                name="propertyWhichShouldBeInjectedByList"
+                ref="listOfBigIntegersDefinedBySpringXML"
+        />
+    </bean>
+    <util:list id="listOfBigIntegersDefinedBySpringXML"
+               value-type="java.math.BigInteger"
+    >
+        <value>9132199382713895168</value>
+    </util:list>
 
 </beans>
