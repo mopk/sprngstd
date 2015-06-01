@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+    "
+>
+
+    <bean
+        id="beanWhoseMethodsAreSubjectsToBeLoggedViaAspects"
+        class="org.mopk.aspect.spring.BeanWhoseMethodsAreSubjectsToBeLogged"
+    />
+
+
+    <!--
+        The indent at 'class'-value shows it's possible add leading
+        & trailing whitespaces in 'class'-value.
+    -->
+    <bean
+        id="beanWithoutToStingMethodDefined"
+        class="
+            org.mopk.aspect.spring.BeanWithoutToStringMethodDefined
+        "
+    />
+
+    <!--
+        This interceptor is used to provide standard logging
+        for input/output messages.
+    -->
+    <bean
+        id="withLogInterceptor"
+        class="
+            org.mopk.aspect.spring.LoggingAdvisor
+        "
+    />
+
+    <aop:config
+        proxy-target-class="true"
+    >
+
+        <!--
+            The indents at 'pointcut' below show
+        -->
+
+        <aop:advisor
+            advice-ref="withLogInterceptor"
+            pointcut="
+                execution(
+                    public *
+                        org.mopk.aspect
+                                    .spring.*.toString(..)
+                )
+                    ||
+                execution(
+                    public *
+                        org.mopk
+                              .aspect.spring
+                                         .*.doSomething(..)
+                )
+            "
+        />
+
+        <!--
+            TODO 2015-06-01 18:38 :
+            To show here it's possible to use 'aop:aspect'
+            in place of 'aop:advisor'.
+        -->
+
+        <!--
+            TODO 2015-06-01 18:40 :
+            To show here it's possible to use 'package only' /
+            'packaged + class only' notations at 'pointcut'.
+        -->
+
+    </aop:config>
+
+</beans>
