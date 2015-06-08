@@ -28,6 +28,53 @@
         "
     />
 
+
+    <!--
+        The group of beans meant to test 'closed'-method calls with aspects.
+    -->
+
+    <bean
+        id="separateBeanToEnableAspectToAnyIntermediateCall"
+        class="
+            org.mopk.aspect.spring.SeparateBeanToEnableAspectToAnyIntermediateCall
+        "
+    />
+
+    <bean
+        id="beanWhosePublicMethodsAreCalledByObjectsOfInnerAnonymousClass"
+        class="
+            org.mopk.aspect.spring.BeanWhosePublicMethodIsCalledByObjectsOfInnerAnonymousClass
+        "
+    >
+        <property
+            name= "separateBeanToEnableAspectToIntermediateCall"
+            ref=  "separateBeanToEnableAspectToAnyIntermediateCall"
+        />
+    </bean>
+
+    <bean
+        id="successorBeanWhosePublicMethodsAreCalledByObjectsOfInnerAnonymousClass"
+        parent=
+           "beanWhosePublicMethodsAreCalledByObjectsOfInnerAnonymousClass"
+        class="
+            org.mopk.aspect.spring.SubclassBeanToTryToAspectIntermediateCall
+        "
+    >
+<!--
+        <property
+            name= "separateBeanToEnableAspectToIntermediateCall"
+            ref=  "separateBeanToEnableAspectToAnyIntermediateCall"
+        />
+-->
+    </bean>
+<!--
+    <alias
+        name="successorBeanWhosePublicMethodsAreCalledByObjectsOfInnerAnonymousClass"
+        alias="beanWhosePublicMethodsAreCalledByObjectsOfInnerAnonymousClass"
+    />
+-->
+
+
     <!--
         This interceptor is used to provide standard logging
         for input/output messages.
@@ -76,6 +123,38 @@
             To show here it's possible to use 'package only' /
             'packaged + class only' notations at 'pointcut'.
         -->
+
+
+        <aop:advisor
+            advice-ref="withLogInterceptor"
+            pointcut="
+                execution(
+                    public * org.mopk.aspect.spring.*.methodToBeLogged(..)
+                )
+            "
+        />
+
+        <aop:advisor
+            advice-ref="withLogInterceptor"
+            pointcut="
+                execution(
+                    public *
+                        org.mopk.aspect.spring.*
+                                    .methodToWorkaroundAspectToOtherMethod(..)
+                )
+            "
+        />
+
+        <aop:advisor
+            advice-ref="withLogInterceptor"
+            pointcut="
+                execution(
+                    public *
+                        org.mopk.aspect.spring.*
+                                           .methodToBeLoggedViaPublication(..)
+                )
+            "
+        />
 
     </aop:config>
 

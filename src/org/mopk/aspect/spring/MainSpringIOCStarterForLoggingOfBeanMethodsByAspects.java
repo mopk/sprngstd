@@ -79,6 +79,28 @@ public class MainSpringIOCStarterForLoggingOfBeanMethodsByAspects {
         nonBean.doSomething(
                 "It's inside 'main(..)'-method."
         );
+
+
+        BeanWhosePublicMethodIsCalledByObjectsOfInnerAnonymousClass
+            beanWhosePublicMethodIsCalledByObjectsOfInnerAnonymousClass =
+                (BeanWhosePublicMethodIsCalledByObjectsOfInnerAnonymousClass)
+                    applicationContext.getBean(
+//                            "beanWhosePublicMethodsAreCalledByObjectsOfInnerAnonymousClass"
+                            "successorBeanWhosePublicMethodsAreCalledByObjectsOfInnerAnonymousClass"
+                    );
+
+        beanWhosePublicMethodIsCalledByObjectsOfInnerAnonymousClass
+            .methodInstantiatingAndCallingMethodOfObjectOfInnerAnonymousClass();
+        beanWhosePublicMethodIsCalledByObjectsOfInnerAnonymousClass
+              .methodToBeLogged(
+                    100500,
+                    "The method has been called directly (w/o inner class)."
+              );
+        beanWhosePublicMethodIsCalledByObjectsOfInnerAnonymousClass
+              .methodToBeLoggedViaPublication(
+                    100501,
+                    "The method has been called directly (w/o inner class) also."
+              );
     }
 
 }
